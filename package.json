@@ -19,7 +19,9 @@
   },
   "dependencies": {
     "@types/express": "^4.0.39",
+    "@types/mongodb": "^3.0.5",
     "express": "^4.16.2",
+    "mongodb": "^3.0.1",
     "typestyle": "^1.5.1"
   }
 }
