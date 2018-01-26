@@ -30,6 +30,5 @@ export function login(req: express.Request, res: express.Response) {
 }
 
 export function getCurrentUser(req, res: express.Response) {
-    console.log('7777');
     res.send(req.user);
 }

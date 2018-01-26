@@ -1,5 +1,6 @@
 import {Document, model, Model, Schema, Promise} from "mongoose";
 import {isEmail} from 'validator';
+import * as passwordHash from 'password-hash';
 import * as jwt from 'jsonwebtoken';
 import * as _ from 'underscore';
 
@@ -43,6 +44,14 @@ var UserSchema = new Schema({
             required: true
         }
     }]
+});
+
+UserSchema.pre('save', function(next) {
+    var user = this;
+    if(user.isModified('password')) {
+        user.password = passwordHash.generate(user.password);
+    }        
+    next();
 });
 
 UserSchema.methods.toJSON = function () {
