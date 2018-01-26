@@ -1,12 +1,13 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import { MongoClient } from 'mongodb';
+import * as mongoose from 'mongoose';
 
 import * as config from './config';
 
 // App class will encapsulate our web server.
 export class App {
   public express: express.Application;
+  public mongoose;
 
   constructor () {}
 
@@ -29,11 +30,14 @@ export class App {
   }
 
   private initDatabase(callback: any): void {
-    MongoClient.connect(config.DB_URI, (err, db) => {
-      if (err) return console.error('Unable to connect to MongoDB server');
+    mongoose.connect(config.DB_URI);
+    var db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'Unable to connect to MongoDB server'));
+    db.once('open', function() {
+      // we're connected!
       console.log('Connected to MongoDB server');
+      this.mongoose = mongoose;
       callback();
-      db.close();
     });
   }
 }

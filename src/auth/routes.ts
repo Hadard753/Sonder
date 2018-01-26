@@ -1,9 +1,9 @@
 import * as express from 'express';
-import { getCurrentUser, login } from './controller';
+import { getCurrentUser, login, register } from './controller';
 
 const router = express.Router();
 
-router.get('/current-user', getCurrentUser);
+router.post('/register', register);
 router.post('/login', login);
-
+router.get('/current-user', getCurrentUser);
 module.exports = router;
