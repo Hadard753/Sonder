@@ -1,4 +1,4 @@
-import {Document, model, Model, Schema} from "mongoose";
+import {Document, model, Model, Schema, Promise} from "mongoose";
 import {isEmail} from 'validator';
 import * as jwt from 'jsonwebtoken';
 import * as _ from 'underscore';
@@ -7,7 +7,13 @@ import {TOKEN_SECRET} from '../config';
 import {User} from '../interfaces/user';
 
 export interface UserDocument extends User,Document {
+    // declare any instance methods here
     generateAuthToken(): Promise<string>;
+}
+
+export interface UserModelInterface extends Model<UserDocument> {
+    // declare any static methods here
+    findByToken(token: string): Promise<UserDocument>; // this should be changed to the correct return type if possible.
 }
 
 var UserSchema = new Schema({
@@ -56,6 +62,26 @@ UserSchema.methods.generateAuthToken = function () {
     return user.save().then(() => {
         return token;
     });
-}
+};
 
-export const UserModel: Model<UserDocument> = model<UserDocument>('User', UserSchema);
+UserSchema.statics.findByToken = function (token: string): Promise<UserDocument> {
+    var User = this;
+    var decoded;
+
+    try {
+        decoded = jwt.verify(token, TOKEN_SECRET);
+    } catch (error) {
+        return Promise.reject();
+    }
+    
+    return User.findOne({
+        '_id': decoded._id,
+        'tokens.token': token,
+        'tokens.access': 'auth'
+    });
+};
+
+// export const UserModel: Model<UserDocument> = model<UserDocument>('User', UserSchema);
+
+// Note the type on the variable, and the two type arguments (instead of one).
+export const UserModel: UserModelInterface = model<UserDocument, UserModelInterface>('User', UserSchema);
