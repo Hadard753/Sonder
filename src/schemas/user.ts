@@ -14,7 +14,8 @@ export interface UserDocument extends User,Document {
 
 export interface UserModelInterface extends Model<UserDocument> {
     // declare any static methods here
-    findByToken(token: string): Promise<UserDocument>; // this should be changed to the correct return type if possible.
+    findByToken(token: string): Promise<UserDocument>; 
+    findByCredentials(email: string, password: string): Promise<UserDocument>; 
 }
 
 var UserSchema = new Schema({
@@ -90,6 +91,14 @@ UserSchema.statics.findByToken = function (token: string): Promise<UserDocument>
     });
 };
 
+UserSchema.statics.findByCredentials = function(email: string, password: string): Promise<UserDocument> {
+    let User = this;
+    return User.findOne({ email }).then((user: UserDocument) => { 
+        if(!user) return Promise.reject('Email not found');
+        if(!passwordHash.verify(password, user.password)) return Promise.reject('Wrong password');
+        return user;
+    });
+}
 // export const UserModel: Model<UserDocument> = model<UserDocument>('User', UserSchema);
 
 // Note the type on the variable, and the two type arguments (instead of one).

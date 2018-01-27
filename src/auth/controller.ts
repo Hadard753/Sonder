@@ -1,4 +1,6 @@
 import * as express from 'express';
+import * as passwordHash from 'password-hash';
+
 import {UserDocument, UserModel} from '../schemas/user';
 
 export function register(req: express.Request, res: express.Response) {
@@ -15,18 +17,14 @@ export function register(req: express.Request, res: express.Response) {
 }
 
 export function login(req: express.Request, res: express.Response) {
-    let {username, password} = req.body;
-    if (username === 'Hadar!' && password === 'SecretPass') {
-        res.status(200).json({
-            username: 'Hadar!',
-            password: 'SecretPass',
-            token: 'myToken'
+    let {email, password} = req.body;
+    UserModel.findByCredentials(email, password).then((user: UserDocument) => {
+        return user.generateAuthToken().then((token: string) => {
+            res.header('x-auth', token).send(user);
         });
-    } else {
-        res.status(401).json({
-            error: 'Wrong username or password'
-        });
-    } 
+    }).catch(e => {
+        res.status(400).send(e);
+    });
 }
 
 export function getCurrentUser(req, res: express.Response) {
