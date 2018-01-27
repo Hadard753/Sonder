@@ -62,3 +62,6 @@ typings/
 
 # VSCode directory
 .vscode
+
+#tests directory
+src/tests

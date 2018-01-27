@@ -81,9 +81,7 @@ UserSchema.methods.removeToken = function(token: string): Promise<void> {
 
     return user.update({
         $pull: {
-            tokens : {
-                token: token
-            }
+            tokens : { token }
         }
     });
 }
