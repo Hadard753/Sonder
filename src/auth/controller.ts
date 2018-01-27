@@ -30,3 +30,11 @@ export function login(req: express.Request, res: express.Response) {
 export function getCurrentUser(req, res: express.Response) {
     res.send(req.user);
 }
+
+export function logout(req, res: express.Response) {
+    req.user.removeToken(req.token).then(() => {
+        res.status(200).send();
+    }, () => {
+        res.status(400).send();
+    });
+}

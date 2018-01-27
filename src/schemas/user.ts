@@ -10,6 +10,7 @@ import {User} from '../interfaces/user';
 export interface UserDocument extends User,Document {
     // declare any instance methods here
     generateAuthToken(): Promise<string>;
+    removeToken(token: string): Promise<void>;
 }
 
 export interface UserModelInterface extends Model<UserDocument> {
@@ -55,6 +56,7 @@ UserSchema.pre('save', function(next) {
     next();
 });
 
+// Function on user document - receive this=the user document we are operating on
 UserSchema.methods.toJSON = function () {
     var user = this;
     var userObject = user.toObject();
@@ -74,6 +76,19 @@ UserSchema.methods.generateAuthToken = function () {
     });
 };
 
+UserSchema.methods.removeToken = function(token: string): Promise<void> {
+    var user = this;
+
+    return user.update({
+        $pull: {
+            tokens : {
+                token: token
+            }
+        }
+    });
+}
+
+// Functions on user collection
 UserSchema.statics.findByToken = function (token: string): Promise<UserDocument> {
     var User = this;
     var decoded;
