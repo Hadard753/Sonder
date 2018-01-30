@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+    height: 100vh;
+}
+
+.btn {
+    padding: 14px 24px;
+    border: 3px solid #b74e99 !important;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #b74e99;
+    background-color: transparent;
+    text-transform: uppercase;
+}
+.btn:focus, .btn:active:focus, .btn.active:focus, .btn:hover {
+    background-color: #b74e99;
+    border-color: #b74e99;
+    outline: 0 none;
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+    color: #fff;
+    background-color: #b74e99;
+    border-color: #b74e99;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    background-color: #b74e99;
+    border-color: #b74e99;
+    outline: 0 none;
+}
