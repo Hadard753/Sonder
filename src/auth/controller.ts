@@ -20,7 +20,7 @@ export function login(req: express.Request, res: express.Response) {
     let {email, password} = req.body;
     UserModel.findByCredentials(email, password).then((user: UserDocument) => {
         return user.generateAuthToken().then((token: string) => {
-            res.header('x-auth', token).send(user);
+            res.header('x-auth', token).json(user);
         });
     }).catch(e => {
         res.status(400).send(e);

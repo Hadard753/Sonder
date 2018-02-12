@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as mongoose from 'mongoose';
+import * as cors from 'cors';
 
 import * as config from './config';
 
@@ -17,8 +18,8 @@ export class App {
     this.express.use(bodyParser.json());
   
     this.initDatabase(() => {
+      this.express.use(cors(config.CORS_OPTIONS));
       this.mountRoutes();
-  
       this.express.listen(port);
       console.log(`Server is now listening on port ${port}...`);
     });

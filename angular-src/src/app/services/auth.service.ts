@@ -9,6 +9,7 @@ import { ApiService } from './api.service';
 @Injectable()
 export class AuthService {
     onLoginChanged: Subject<boolean> = new Subject();
+    onErrorChanged: Subject<string> = new Subject();
     loginObservable: Observable<User>;
     user: User;
     errorMessage: string = '';
@@ -20,18 +21,26 @@ export class AuthService {
     get isLoggedIn() {
         return this.token && this.user;
     }   
+
+    private setErrorMessage(message: string) {
+        this.errorMessage = message;
+        this.onErrorChanged.next(this.errorMessage);
+    }
     
     constructor(private cookieService: CookieService, private apiService: ApiService) {}
 
     login(email: string, password: string): void {
+        this.setErrorMessage(undefined);
         this.apiService.login(email, password).subscribe(
             result => {
+                console.log(`the result is : ${result}`);
                 this.cookieService.put('token', result.token);
                 this.user = result.user;
                 this.onLoginChanged.next(true);
             }, err => {
-                this.errorMessage =  'Error occurred. try again';
+                console.log(`the err is : ${err}`);
+                this.setErrorMessage('Error occurred. try again');
             }
-        )
+        );
     }
 }
