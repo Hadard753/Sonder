@@ -33,13 +33,11 @@ export class AuthService {
         this.setErrorMessage(undefined);
         this.apiService.login(email, password).subscribe(
             result => {
-                console.log(`the result is : ${result}`);
                 this.cookieService.put('token', result.token);
                 this.user = result.user;
                 this.onLoginChanged.next(true);
             }, err => {
-                console.log(`the err is : ${err}`);
-                this.setErrorMessage('Error occurred. try again');
+                this.setErrorMessage(JSON.parse(err._body).error || err);
             }
         );
     }

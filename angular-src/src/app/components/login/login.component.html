@@ -1,6 +1,9 @@
 <div class="text-center body" data-gr-c-s-loaded="true">
   <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <img class="mb-5" src="/assets/sonder-logo.png" alt="" width="240" height="120">
+    <div class="alert alert-danger" *ngIf="error">
+      <strong>{{error}}</strong>
+    </div>
     <!-- <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1> -->
     <label for="inputEmail" class="sr-only">Email address</label>
     <input type="email" 

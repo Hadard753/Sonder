@@ -11,10 +11,14 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   email: string;
   password: string;
+  error: string;
 
   constructor(private authService: AuthService ) { }
 
   ngOnInit() {
+    this.authService.onErrorChanged.subscribe(err => {
+      this.error = err;
+    });
     this.initForm();
   }
 
@@ -26,7 +30,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.loginForm, undefined, 2);
     this.authService.login(this.loginForm.value['email'], this.loginForm.value['password']);
   }
 }
