@@ -2,7 +2,7 @@ import {UserDocument, UserModel} from '../schemas/user';
 
 
 export const isAuthenticate = (req, res, next) => {
-    let token = req.header('x-auth');
+    let token = req.header('Authentication');
 
     UserModel.findByToken(token).then((user: UserDocument) => {
         if(!user) {

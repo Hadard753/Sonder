@@ -10,11 +10,16 @@ import { LoginComponent } from './components/login/login.component';
 import { ApiService } from './services/api.service';
 import { AuthService } from './services/auth.service';
 import { Http } from '@angular/http/src/http';
+import { HomeComponent } from './components/home/home.component';
+import { HttpClient } from './services/http.service';
+import { AppRoutingModule } from './modules/app-routing.module';
+import { AuthGuardService } from './services/auth-guard.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -22,10 +27,13 @@ import { Http } from '@angular/http/src/http';
     ReactiveFormsModule,
     HttpModule,
     CookieModule.forRoot(),
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    AppRoutingModule
   ],
   providers: [
     ApiService,
+    HttpClient,
+    AuthGuardService,
     AuthService
   ],
   bootstrap: [AppComponent]

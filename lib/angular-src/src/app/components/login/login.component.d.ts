@@ -6,6 +6,7 @@ export declare class LoginComponent implements OnInit {
     loginForm: FormGroup;
     email: string;
     password: string;
+    error: string;
     constructor(authService: AuthService);
     ngOnInit(): void;
     private initForm();

@@ -12,7 +12,7 @@ export function register(req: express.Request, res: express.Response) {
     }, (error) => {
         sendError(res, 'Invalid user data');
     }).then((token: string) => {
-        res.header('x-auth', token);
+        res.header('Authentication', token);
         sendOk(res, user);
     }).catch((e) => {
         sendError(res, 'Could not generate token', 500);
@@ -23,8 +23,7 @@ export function login(req: express.Request, res: express.Response) {
     let {email, password} = req.body;
     UserModel.findByCredentials(email, password).then((user: UserDocument) => {
         return user.generateAuthToken().then((token: string) => {
-            res.header('x-auth', token);
-            sendOk(res, user);
+            sendOk(res, { user, token });
         });
     }).catch(e => {
         sendError(res, e, 401)

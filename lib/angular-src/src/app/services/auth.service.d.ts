@@ -6,14 +6,18 @@ import { ApiService } from './api.service';
 export declare class AuthService {
     private cookieService;
     private apiService;
-    onLoginChanged: Subject<boolean>;
+    loginProcess: Observable<User>;
+    loginChanged: Subject<User>;
     onErrorChanged: Subject<string>;
-    loginObservable: Observable<User>;
     user: User;
     errorMessage: string;
+    isLoading: boolean;
     readonly token: string;
-    readonly isLoggedIn: User;
+    readonly isLoggedIn: boolean;
+    readonly isLoggedInAsync: boolean | Observable<boolean>;
     private setErrorMessage(message);
     constructor(cookieService: CookieService, apiService: ApiService);
+    onLoggedIn(user: any): void;
     login(email: string, password: string): void;
+    checkLogin(): Observable<User>;
 }
