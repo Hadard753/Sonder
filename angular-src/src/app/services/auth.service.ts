@@ -67,7 +67,7 @@ export class AuthService {
             },
             err => {
               this.isLoading = false;
-              this.setErrorMessage(`could not fetch current user: ${err}`);
+            //   this.setErrorMessage(`could not fetch current user: ${err}`);
               return false;
             }
           );
